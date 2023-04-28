@@ -25,7 +25,11 @@
                     <h1>Cronjobs</h1>
                     <div class="form-group">
                         <label for="env_vars">Environment Variables:</label>
-                        <textarea class="form-control" rows="3" id="env_vars" placeholder="# Please set PATH, MAILTO, HOME... here"></textarea>
+                        <textarea class="form-control" rows="3" id="env_vars" placeholder="# Please set PATH, MAILTO, HOME... here">
+                        [%- FOR env IN environment -%]
+                        [%- env.data %]
+                        [% END -%]
+                        </textarea>
                     </div>
 
                     <div id="toolbar" class="btn-toolbar">
@@ -51,7 +55,7 @@
                             [% FOR block IN blocks %]
                                 <tr>
                                     <td>
-                                        [% block.no | html %]
+                                        [% block.id | html %]
                                     </td>
                                     <td>
                                         <ul>
@@ -71,8 +75,11 @@
                                         <a class="btn btn-primary" data-toggle="tooltip" data-placement="left" title="stdout" href="<%= JSON.parse(routes).stdout + '?id=' + crontab._id %>" target="_blank"><i class="fa fa-list-alt" aria-hidden="true"></i></a>
                                         <a class="btn btn-default"><i class="fa fa-play" aria-hidden="true"></i> Run now</a>
                                         <a class="btn btn-primary"><i class="fa fa-edit" aria-hidden="true"></i> Edit</a>
+                                        [% IF block.events.0.active %]
                                         <a class="btn btn-default"><i class="fa fa-stop" aria-hidden="true"></i> Disable</a>
+                                        [% ELSE %]
                                         <a class="btn btn-default"><i class="fa fa-play" aria-hidden="true"></i> Enable</a>
+                                        [% END %]
                                         <a class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i> Remove</a>
                                     </td>
                                 </tr>

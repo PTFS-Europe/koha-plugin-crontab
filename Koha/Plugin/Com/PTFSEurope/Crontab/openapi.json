@@ -1,0 +1,41 @@
+{
+  "/block/{block_id}": {
+    "put": {
+      "x-mojo-to": "Com::PTFSEurope::Crontab::Controller#update",
+      "operationId": "UpdateBlock",
+      "tags": ["cronjobs"],
+      "parameters": [{
+        "name": "block_id",
+        "in": "path",
+        "description": "Internal cron block identifier",
+        "required": true,
+        "type": "integer"
+      }],
+      "produces": [
+        "application/json"
+      ],
+      "responses": {
+        "200": {
+          "description": "A successful update"
+        },
+        "404": {
+          "description": "An error occured",
+          "schema": {
+              "type": "object",
+                "properties": {
+                  "error": {
+                    "description": "An explanation for the error",
+                    "type": "string"
+                  }
+                }
+          }
+        }
+      },
+      "x-koha-authorization": {
+        "permissions": {
+          "parameters": "1"
+        }
+      }
+    }
+  }
+}
