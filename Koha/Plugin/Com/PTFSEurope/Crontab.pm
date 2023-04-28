@@ -119,6 +119,8 @@ sub install() {
         return 0;
     };
 
+    # We should take a backup here before we do anything else
+
     # Read existing crontab, update it to identify blocks
     # so we can manage that we can recognise for management
     # BLOCKID:
