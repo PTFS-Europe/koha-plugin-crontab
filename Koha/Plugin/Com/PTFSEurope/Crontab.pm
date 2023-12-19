@@ -7,8 +7,10 @@ use base qw(Koha::Plugins::Base);
 
 use POSIX qw(strftime);
 use Module::Metadata;
-use Config::Crontab;
+use Module::Load::Conditional qw(check_install can_load);
 use YAML::XS;
+
+use if check_install(module => 'Config::Crontab') != undef, 'Config::Crontab';
 
 use C4::Context;
 
@@ -29,6 +31,7 @@ our $metadata = {
     description     => 'Add instance crontab management to Koha',
     date_authored   => '2023-04-25',
     date_updated    => "1970-01-01",
+    libs            => [ { module => 'Config::Crontab' } ],
     minimum_version => '22.1100000',
     maximum_version => undef,
     version         => $VERSION,
@@ -130,6 +133,8 @@ sub api_namespace {
 
 sub install() {
     my ( $self, $args ) = @_;
+
+    return 0 unless can_load( modules => { 'Config::Crontab' => undef } );
 
     my $existing = 1;
 
