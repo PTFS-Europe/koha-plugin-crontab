@@ -19,7 +19,7 @@ To set up the Koha plugin system you must first make some changes to your instal
 Once set up is complete you will need to alter your UseKohaPlugins system preference. On the Tools page you will see the
 Tools Plugins and on the Reports page you will see the Reports Plugins.
 
-## Add dependancies
+## Add dependencies
 
 This plugin depends on the Config::Crontab perl module from CPAN. You will need to ask your system administrator to 
 ensure it is available prior to downloading and installing the plugin package.
