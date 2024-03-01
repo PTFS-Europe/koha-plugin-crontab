@@ -128,6 +128,37 @@ sub api_namespace {
     return 'crontab';
 }
 
+=head2 configure
+
+  Configuration routine
+  
+=cut
+
+sub configure {
+    my ( $self, $args ) = @_;
+    my $cgi = $self->{'cgi'};
+
+    unless ( $cgi->param('save') ) {
+        my $template = $self->get_template( { file => 'configure.tt' } );
+
+        ## Grab the values we already have for our settings, if any exist
+        $template->param(
+            enable_logging =>
+              $self->retrieve_data('enable_logging'),
+        );
+
+        $self->output_html( $template->output() );
+    }
+    else {
+        $self->store_data(
+            {
+                enable_logging => $cgi->param('enable_logging'),
+            }
+        );
+        $self->go_home();
+    }
+}
+
 sub install() {
     my ( $self, $args ) = @_;
 
