@@ -22,6 +22,8 @@ sub add {
     my $c = shift->openapi->valid_input or return;
 
     my $ct = Config::Crontab->new();
+    my $cron_file = C4::Context->config('koha_plugin_crontab_cronfile') || undef;
+    $ct->file($cron_file) if $cron_file;
     $ct->mode('block');
     $ct->read or do {
         return $c->render(
@@ -87,6 +89,8 @@ sub update {
     my $c = shift->openapi->valid_input or return;
 
     my $ct = Config::Crontab->new();
+    my $cron_file = C4::Context->config('koha_plugin_crontab_cronfile') || undef;
+    $ct->file($cron_file) if $cron_file;
     $ct->mode('block');
     $ct->read or do {
         return $c->render(
@@ -160,6 +164,8 @@ sub delete {
     my $c = shift->openapi->valid_input or return;
 
     my $ct = Config::Crontab->new();
+    my $cron_file = C4::Context->config('koha_plugin_crontab_cronfile') || undef;
+    $ct->file($cron_file) if $cron_file;
     $ct->mode('block');
     $ct->read or do {
         return $c->render(
@@ -206,6 +212,8 @@ sub update_environment {
     my $c = shift->openapi->valid_input or return;
 
     my $ct = Config::Crontab->new();
+    my $cron_file = C4::Context->config('koha_plugin_crontab_cronfile') || undef;
+    $ct->file($cron_file) if $cron_file;
     $ct->mode('block');
     $ct->read or do {
         return $c->render(
@@ -273,6 +281,8 @@ sub backup {
     my $plugin = Koha::Plugin::Com::PTFSEurope::Crontab->new;
 
     my $ct = Config::Crontab->new();
+    my $cron_file = C4::Context->config('koha_plugin_crontab_cronfile') || undef;
+    $ct->file($cron_file) if $cron_file;
     $ct->mode('block');
     $ct->read or do {
         return $c->render(

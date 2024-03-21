@@ -50,6 +50,8 @@ sub admin {
     my $template = $self->get_template( { file => 'crontab.tt' } );
 
     my $ct = Config::Crontab->new();
+    my $cron_file = C4::Context->config('koha_plugin_crontab_cronfile') || undef;
+    $ct->file($cron_file) if $cron_file;
     $ct->mode('block');
     $ct->read or do {
         $template->param( error => $ct->error );
@@ -134,6 +136,8 @@ sub install() {
     my $existing = 1;
 
     my $ct = Config::Crontab->new();
+    my $cron_file = C4::Context->config('koha_plugin_crontab_cronfile') || undef;
+    $ct->file($cron_file) if $cron_file;
     $ct->mode('block');
     $ct->read or do {
         $existing = 0;

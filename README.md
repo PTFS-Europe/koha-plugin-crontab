@@ -5,6 +5,14 @@ This is a plugin for [Koha](http://koha-community.org) that simplifies the manag
 We put the power in the hands of the user by exposing the local crontab to them as an administration tool plugin, allowing them to edit 
 existing lines, schedules and environment as well as adding new jobs all from within the staff UI.
 
+# Configuration
+
+This plugin can accept some settings stored in the koha configuration file, inside the `config` block.
+
+## koha_plugin_crontab_cronfile
+`<koha_plugin_crontab_cronfile>/etc/cron.d/koha-mylibrary</koha_plugin_crontab_cronfile>`
+By default the plugin will use the Koha user's crontab. If this option is set, it will use this file instead.
+
 # Installation
 
 ## Enable the plugin system
