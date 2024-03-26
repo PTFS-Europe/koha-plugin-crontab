@@ -47,6 +47,16 @@ sub admin {
     my ( $self, $args ) = @_;
     my $cgi = $self->{'cgi'};
 
+    if ( my $koha_plugin_crontab_user_allowlist = C4::Context->config('koha_plugin_crontab_user_allowlist') ) {
+        my @borrowernumbers = split(',', $koha_plugin_crontab_user_allowlist );
+        my $bn = C4::Context->userenv->{number};
+        unless ( grep( /^$bn$/, @borrowernumbers ) ) {
+            my $t = $self->get_template( { file => 'access_denied.tt' } );
+            $self->output_html( $t->output() );
+            exit 0;
+        }
+    }
+
     my $template = $self->get_template( { file => 'crontab.tt' } );
 
     my $ct = Config::Crontab->new();

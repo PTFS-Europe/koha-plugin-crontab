@@ -10,6 +10,8 @@ use Mojo::Base 'Mojolicious::Controller';
 use POSIX qw(strftime);
 use Config::Crontab;
 
+use C4::Context;
+
 =head1 API
 
 =head2 Class Methods
@@ -20,6 +22,8 @@ use Config::Crontab;
 
 sub add {
     my $c = shift->openapi->valid_input or return;
+
+    if ( my $r = check_user_allowlist($c) ) { return $r; }
 
     my $ct = Config::Crontab->new();
     my $cron_file = C4::Context->config('koha_plugin_crontab_cronfile') || undef;
@@ -87,6 +91,8 @@ sub add {
 
 sub update {
     my $c = shift->openapi->valid_input or return;
+
+    if ( my $r = check_user_allowlist($c) ) { return $r; }
 
     my $ct = Config::Crontab->new();
     my $cron_file = C4::Context->config('koha_plugin_crontab_cronfile') || undef;
@@ -163,6 +169,8 @@ sub update {
 sub delete {
     my $c = shift->openapi->valid_input or return;
 
+    if ( my $r = check_user_allowlist($c) ) { return $r; }
+
     my $ct = Config::Crontab->new();
     my $cron_file = C4::Context->config('koha_plugin_crontab_cronfile') || undef;
     $ct->file($cron_file) if $cron_file;
@@ -210,6 +218,8 @@ sub delete {
 
 sub update_environment {
     my $c = shift->openapi->valid_input or return;
+
+    if ( my $r = check_user_allowlist($c) ) { return $r; }
 
     my $ct = Config::Crontab->new();
     my $cron_file = C4::Context->config('koha_plugin_crontab_cronfile') || undef;
@@ -278,6 +288,8 @@ sub update_environment {
 sub backup {
     my $c = shift->openapi->valid_input or return;
 
+    if ( my $r = check_user_allowlist($c) ) { return $r; }
+
     my $plugin = Koha::Plugin::Com::PTFSEurope::Crontab->new;
 
     my $ct = Config::Crontab->new();
@@ -308,4 +320,18 @@ sub backup {
     );
 }
 
+sub check_user_allowlist {
+    my ( $c ) = @_;
+
+    if ( my $koha_plugin_crontab_user_allowlist = C4::Context->config('koha_plugin_crontab_user_allowlist') ) {
+        my @borrowernumbers = split(',', $koha_plugin_crontab_user_allowlist );
+        my $bn = C4::Context->userenv->{number};
+        unless ( grep( /^$bn$/, @borrowernumbers ) ) {
+            return $c->render(
+                status  => 401,
+                openapi => { error => "You are not authorised to use this plugin" }
+            );
+        }
+    }
+}
 1;

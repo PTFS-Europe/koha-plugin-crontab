@@ -13,6 +13,11 @@ This plugin can accept some settings stored in the koha configuration file, insi
 `<koha_plugin_crontab_cronfile>/etc/cron.d/koha-mylibrary</koha_plugin_crontab_cronfile>`
 By default the plugin will use the Koha user's crontab. If this option is set, it will use this file instead.
 
+## koha_plugin_crontab_user_allowlist
+`<koha_plugin_crontab_user_allowlist>1,2,3</koha_plugin_crontab_user_allowlist>`
+This option, if set, will allow only the users whose borrowernumbers are listed to access the plugin
+even if the patron has the admin plugins permission.
+
 # Installation
 
 ## Enable the plugin system
