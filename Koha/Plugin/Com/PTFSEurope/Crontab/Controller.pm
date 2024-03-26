@@ -26,7 +26,8 @@ use C4::Log;
 sub add {
     my $c = shift->openapi->valid_input or return;
 
-    my $logging = $self->retrieve_data('enable_logging') // 1;
+    my $plugin = Koha::Plugin::Com::PTFSEurope::Crontab->new({});
+    my $logging = $plugin->retrieve_data('enable_logging') // 1;
 
     my $ct = Config::Crontab->new();
     $ct->mode('block');
@@ -95,7 +96,8 @@ sub add {
 sub update {
     my $c = shift->openapi->valid_input or return;
 
-    my $logging = $self->retrieve_data('enable_logging') // 1;
+    my $plugin = Koha::Plugin::Com::PTFSEurope::Crontab->new({});
+    my $logging = $plugin->retrieve_data('enable_logging') // 1;
 
     my $ct = Config::Crontab->new();
     $ct->mode('block');
@@ -172,7 +174,8 @@ sub update {
 sub delete {
     my $c = shift->openapi->valid_input or return;
 
-    my $logging = $self->retrieve_data('enable_logging') // 1;
+    my $plugin = Koha::Plugin::Com::PTFSEurope::Crontab->new({});
+    my $logging = $plugin->retrieve_data('enable_logging') // 1;
 
     my $ct = Config::Crontab->new();
     $ct->mode('block');
@@ -222,7 +225,8 @@ sub delete {
 sub update_environment {
     my $c = shift->openapi->valid_input or return;
 
-    my $logging = $self->retrieve_data('enable_logging') // 1;
+    my $plugin = Koha::Plugin::Com::PTFSEurope::Crontab->new({});
+    my $logging = $plugin->retrieve_data('enable_logging') // 1;
 
     my $ct = Config::Crontab->new();
     $ct->mode('block');
@@ -291,7 +295,7 @@ sub update_environment {
 sub backup {
     my $c = shift->openapi->valid_input or return;
 
-    my $plugin = Koha::Plugin::Com::PTFSEurope::Crontab->new;
+    my $plugin = Koha::Plugin::Com::PTFSEurope::Crontab->new({});
 
     my $ct = Config::Crontab->new();
     $ct->mode('block');
