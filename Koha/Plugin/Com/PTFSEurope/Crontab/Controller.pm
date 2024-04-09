@@ -350,7 +350,9 @@ sub check_user_allowlist {
     if ( my $koha_plugin_crontab_user_allowlist = C4::Context->config('koha_plugin_crontab_user_allowlist') ) {
         my @borrowernumbers = split(',', $koha_plugin_crontab_user_allowlist );
         my $bn = C4::Context->userenv->{number};
-        unless ( grep( /^$bn$/, @borrowernumbers ) ) {
+        if ( grep( /^$bn$/, @borrowernumbers ) ) {
+            return undef;
+        } else {
             return $c->render(
                 status  => 401,
                 openapi => { error => "You are not authorised to use this plugin" }
@@ -358,4 +360,5 @@ sub check_user_allowlist {
         }
     }
 }
+
 1;
